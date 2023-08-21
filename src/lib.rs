@@ -647,9 +647,28 @@ unsafe extern "C" fn start_game_clicked(
     let state: &mut State = &mut *data.cast();
 
     if state.game_path.exists() {
+        let executable_path = &mut state.game_path.clone();
+        
+        info!("executing {}", executable_path.clone().to_str().unwrap());
+        
+        if state.game_path.extension().unwrap_or_default() == "app" && state.game_path.is_dir() {
+            executable_path.push("Contents");
+            executable_path.push("MacOS");
+            
+            fs::read_dir(executable_path.clone()).map_or_else(|_x| {}, |mut x| {
+                match x.find(|_y| true) {
+                    Some(Ok(file)) => {
+                        executable_path.push(file.file_name());
+                        info!("{}", executable_path.clone().to_str().unwrap());
+                    }
+                    _ => { info!("oops!") }
+                };
+            });
+        }
+        
         info!("Starting game...");
 
-        let mut process = Command::new(state.game_path.clone());
+        let mut process = Command::new(executable_path);
 
         let _child = process.spawn();
 
