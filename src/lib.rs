@@ -654,7 +654,7 @@ unsafe extern "C" fn start_game_clicked(
 
         let _child = match is_mac_app {
             true => Command::new("open")
-                .args(["-n", state.game_path.to_str().unwrap_or_default()])
+                .args(["-n", "-W", state.game_path.to_str().unwrap_or_default()])
                 .spawn(),
             false => Command::new(state.game_path.clone()).spawn(),
         };
