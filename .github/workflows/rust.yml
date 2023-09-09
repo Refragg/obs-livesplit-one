@@ -66,7 +66,7 @@ jobs:
         
       - name: Install arm64 OBS
         if: matrix.os == 'macOS-latest' && matrix.arm == 'yes'
-        run: brew update && brew fetch --force --bottle-tag=arm64_ventura obs && brew install $(brew --cache --bottle-tag=arm64_ventura obs)
+        run: mkdir -p /Users/runner/Library/Caches/Homebrew/downloads/ && curl https://cdn-fastly.obsproject.com/downloads/obs-studio-29.1.3-macos-arm64.dmg -o 66aa4aa5a5180b4398c83887d5b9bd416941eff672106cb9168b13ccda26d365--obs-studio-29.1.3-macos-x86_64.dmg && brew fetch --force --bottle-tag=arm64_ventura obs && brew install $(brew --cache --bottle-tag=arm64_ventura obs)
 
       - name: Install x64 OBS
         if: matrix.os == 'macOS-latest' && matrix.arm == 'no'
