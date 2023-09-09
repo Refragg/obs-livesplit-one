@@ -99,6 +99,7 @@ jobs:
 
           - label: macOS aarch64
             target: aarch64-apple-darwin
+            rust_flags: -L ~/Applications/OBS.app/Contents/MacOS -L /Applications/OBS.app/Contents/MacOS -L /Applications/OBS.app/Contents/Frameworks
             os: macOS-latest
             features: auto-splitting
             cross: skip
@@ -106,6 +107,7 @@ jobs:
 
           - label: macOS x86_64
             target: x86_64-apple-darwin
+            rust_flags: -L ~/Applications/OBS.app/Contents/MacOS -L /Applications/OBS.app/Contents/MacOS -L /Applications/OBS.app/Contents/Frameworks
             os: macOS-latest
             features: auto-splitting
             cross: skip
@@ -113,7 +115,7 @@ jobs:
           - label: macOS x86_64-v3
             target: x86_64-apple-darwin
             target_rename: x86_64_v3-apple-darwin
-            rust_flags: -C target-cpu=x86-64-v3
+            rust_flags: -C target-cpu=x86-64-v3 -L ~/Applications/OBS.app/Contents/MacOS -L /Applications/OBS.app/Contents/MacOS -L /Applications/OBS.app/Contents/Frameworks
             os: macOS-latest
             features: auto-splitting
             cross: skip
@@ -130,6 +132,10 @@ jobs:
       - name: Install Target
         if: matrix.install_target != ''
         run: rustup target add ${{ matrix.target }}
+        
+      - name: Install OBS
+        if: matrix.os == 'macOS-latest'
+        run: brew install --cask obs
 
       - name: Download cross
         if: matrix.cross == ''
