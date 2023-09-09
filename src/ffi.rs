@@ -16,7 +16,7 @@ use std::{
 pub use crate::ffi_types::*;
 
 #[cfg(target_os = "macos")]
-#[link(name = "libobs.framework", kind = "framework")]
+#[link(name = "libobs", kind = "framework")]
 extern "C" {
     pub fn obs_register_source_s(info: *const obs_source_info, size: size_t);
     pub fn gs_texture_create(
