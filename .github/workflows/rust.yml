@@ -65,11 +65,11 @@ jobs:
         run: rustup target add ${{ matrix.target }}
         
       - name: Install arm64 OBS
-        if: matrix.os == 'macOS-latest' && arm == 'yes'
+        if: matrix.os == 'macOS-latest' && matrix.arm == 'yes'
         run: arch -arm64 brew install --cask obs
 
       - name: Install x64 OBS
-        if: matrix.os == 'macOS-latest' && arm == 'no'
+        if: matrix.os == 'macOS-latest' && matrix.arm == 'no'
         run: brew install --cask obs
 
       - name: Download cross
