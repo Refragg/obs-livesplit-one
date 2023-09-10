@@ -27,7 +27,7 @@ jobs:
         include:
           - label: macOS aarch64
             target: aarch64-apple-darwin
-            rust_flags: -L framework=/Applications/OBS.app/Contents/MacOS -L framework=/Applications/OBS.app/Contents/Frameworks -L framework=/Applications/OBS.app/Contents/Frameworks/libobs.framework/Versions/A -L framework=/Applications/OBS.app/Contents/Frameworks/libobs.framework/
+            rust_flags: -L framework=/Applications/OBS.app/Contents/Frameworks/libobs.framework/Versions/A
             os: macOS-latest
             arm: yes
             features: auto-splitting
@@ -36,7 +36,7 @@ jobs:
 
           - label: macOS x86_64
             target: x86_64-apple-darwin
-            rust_flags: -L framework=/Applications/OBS.app/Contents/MacOS -L framework=/Applications/OBS.app/Contents/Frameworks -L framework=/Applications/OBS.app/Contents/Frameworks/libobs.framework/Versions/A -L framework=/Applications/OBS.app/Contents/Frameworks/libobs.framework/
+            rust_flags: -L framework=/Applications/OBS.app/Contents/Frameworks
             os: macOS-latest
             arm: no
             features: auto-splitting
@@ -45,7 +45,7 @@ jobs:
           - label: macOS x86_64-v3
             target: x86_64-apple-darwin
             target_rename: x86_64_v3-apple-darwin
-            rust_flags: -C target-cpu=x86-64-v3 -L framework=/Applications/OBS.app/Contents/MacOS -L framework=/Applications/OBS.app/Contents/Frameworks -L framework=/Applications/OBS.app/Contents/Frameworks/libobs.framework/Versions/A -L framework=/Applications/OBS.app/Contents/Frameworks/libobs.framework/
+            rust_flags: -C target-cpu=x86-64-v3 -L framework=/Applications/OBS.app/Contents/Frameworks/libobs.framework/
             os: macOS-latest
             arm: no
             features: auto-splitting
