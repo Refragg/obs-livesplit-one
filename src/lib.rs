@@ -149,8 +149,8 @@ struct Settings {
 #[derive(Deserialize)]
 struct ObsEditableListEntry {
     value: String,
-    selected: bool,
-    hidden: bool,
+    _selected: bool,
+    _hidden: bool,
 }
 
 fn parse_run(path: &Path) -> Option<(Run, bool)> {
@@ -891,7 +891,7 @@ unsafe extern "C" fn settings_list_modified(
             }
         }
 
-        return true;
+        true
     } else {
         reset_auto_splitter_setting_ui!();
     }
