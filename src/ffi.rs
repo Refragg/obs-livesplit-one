@@ -68,7 +68,6 @@ extern "C" {
         description: *const c_char,
     ) -> *mut obs_property_t;
     pub fn obs_data_get_bool(data: *mut obs_data_t, name: *const c_char) -> bool;
-    #[cfg(feature = "auto-splitting")]
     pub fn obs_properties_add_text(
         props: *mut obs_properties_t,
         name: *const c_char,
@@ -139,9 +138,7 @@ extern "C" {
     pub fn obs_property_set_description(prop: *mut obs_property_t, description: *const c_char);
     #[cfg(feature = "auto-splitting")]
     pub fn obs_property_set_enabled(prop: *mut obs_property_t, enabled: bool);
-    #[cfg(feature = "auto-splitting")]
     pub fn obs_property_set_visible(prop: *mut obs_property_t, visible: bool);
-    #[cfg(feature = "auto-splitting")]
     pub fn obs_properties_get(
         props: *mut obs_properties_t,
         prop: *const c_char,

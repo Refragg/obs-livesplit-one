@@ -28,9 +28,10 @@ use ffi::{
     obs_data_set_default_int, obs_data_t, obs_enter_graphics, obs_get_base_effect, obs_hotkey_id,
     obs_hotkey_register_source, obs_hotkey_t, obs_leave_graphics, obs_module_t, obs_mouse_event,
     obs_properties_add_bool, obs_properties_add_button, obs_properties_add_editable_list,
-    obs_properties_add_int, obs_properties_add_path, obs_properties_create,
-    obs_property_set_modified_callback2, obs_property_t, obs_register_source_s, obs_source_info,
-    obs_source_t, GS_DYNAMIC, GS_RGBA, LOG_WARNING, OBS_EDITABLE_LIST_TYPE_STRINGS,
+    obs_properties_add_int, obs_properties_add_path, obs_properties_add_text,
+    obs_properties_create, obs_properties_get, obs_property_set_modified_callback2,
+    obs_property_set_visible, obs_property_t, obs_register_source_s, obs_source_info, obs_source_t,
+    GS_DYNAMIC, GS_RGBA, LOG_WARNING, OBS_EDITABLE_LIST_TYPE_STRINGS,
     OBS_EFFECT_PREMULTIPLIED_ALPHA, OBS_ICON_TYPE_GAME_CAPTURE, OBS_PATH_FILE,
     OBS_SOURCE_CONTROLLABLE_MEDIA, OBS_SOURCE_CUSTOM_DRAW, OBS_SOURCE_INTERACTION,
     OBS_SOURCE_TYPE_INPUT, OBS_SOURCE_VIDEO,
@@ -57,10 +58,9 @@ use serde_json::from_str;
 #[cfg(feature = "auto-splitting")]
 use {
     self::ffi::{
-        obs_data_set_bool, obs_data_set_string, obs_properties_add_list, obs_properties_add_text,
-        obs_properties_get, obs_property_list_add_string, obs_property_set_description,
-        obs_property_set_enabled, obs_property_set_visible, OBS_COMBO_FORMAT_STRING,
-        OBS_COMBO_TYPE_LIST, OBS_TEXT_INFO,
+        obs_data_set_bool, obs_data_set_string, obs_properties_add_list,
+        obs_property_list_add_string, obs_property_set_description, obs_property_set_enabled,
+        OBS_COMBO_FORMAT_STRING, OBS_COMBO_TYPE_LIST, OBS_TEXT_INFO,
     },
     livesplit_core::auto_splitting,
     livesplit_core::auto_splitting::{SettingValue, UserSetting, UserSettingKind},
