@@ -294,11 +294,11 @@ pub extern "C" fn obs_data_get_array(_data: *mut obs_data_t, _name: *const c_cha
     panic!()
 }
 #[no_mangle]
-pub extern "C" fn obs_data_array_count(_array: *mut c_void, _idx: size_t) -> size_t {
+pub extern "C" fn obs_data_array_count(_array: *mut c_void) -> size_t {
     panic!()
 }
 #[no_mangle]
-pub extern "C" fn obs_data_array_item(_array: *mut c_void) -> *mut obs_data_t {
+pub extern "C" fn obs_data_array_item(_array: *mut c_void, _idx: size_t) -> *mut obs_data_t {
     panic!()
 }
 #[no_mangle]
