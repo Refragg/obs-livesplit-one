@@ -149,7 +149,9 @@ struct Settings {
 #[derive(Deserialize)]
 struct ObsEditableListEntry {
     value: String,
+    #[serde(rename = "selected")]
     _selected: bool,
+    #[serde(rename = "hidden")]
     _hidden: bool,
 }
 
@@ -209,13 +211,19 @@ unsafe fn get_game_environment_vars(settings: *mut obs_data_t) -> Vec<(String, S
         let item = obs_data_array_item(environment_list, i);
         let raw_json = obs_data_get_json(item);
         let raw_json = CStr::from_ptr(raw_json.cast()).to_string_lossy();
-        let entry = from_str::<ObsEditableListEntry>(raw_json.as_ref()).unwrap();
+        let entry = match from_str::<ObsEditableListEntry>(raw_json.as_ref()) {
+            Ok(entry) => { entry }
+            Err(e) => {
+                warn!("Couldn't read item {i} contents: {e}");
+                continue
+            }
+        };
 
         let (key, value) = match entry.value.split_once('=') {
             Some((key, value)) => (key, value),
             None => {
                 warn!("Invalid environment variable entry: '{}'", entry.value);
-                continue;
+                continue
             }
         };
 
