@@ -212,10 +212,10 @@ unsafe fn get_game_environment_vars(settings: *mut obs_data_t) -> Vec<(String, S
         let raw_json = obs_data_get_json(item);
         let raw_json = CStr::from_ptr(raw_json.cast()).to_string_lossy();
         let entry = match from_str::<ObsEditableListEntry>(raw_json.as_ref()) {
-            Ok(entry) => { entry }
+            Ok(entry) => entry,
             Err(e) => {
                 warn!("Couldn't read item {i} contents: {e}");
-                continue
+                continue;
             }
         };
 
@@ -223,7 +223,7 @@ unsafe fn get_game_environment_vars(settings: *mut obs_data_t) -> Vec<(String, S
             Some((key, value)) => (key, value),
             None => {
                 warn!("Invalid environment variable entry: '{}'", entry.value);
-                continue
+                continue;
             }
         };
 
@@ -741,22 +741,31 @@ unsafe extern "C" fn start_game_clicked(
             }
             let mut command = Command::new(state.game_path.clone());
 
-            #[cfg(windows)]
-            let game_arguments = match winsafe::CommandLineToArgv(state.game_arguments.as_str()) {
-                Ok(arguments) => arguments,
-                Err(e) => {
-                    warn!("Could not parse the game command arguments: {e}");
-                    return false;
+            // Is the game arguments string empty / whitespace only?
+            if !state.game_arguments.trim().is_empty() {
+                debug!("Parsing game arguments");
+                
+                #[cfg(windows)]
+                let game_arguments = match winsafe::CommandLineToArgv(state.game_arguments.as_str())
+                {
+                    Ok(arguments) => arguments,
+                    Err(e) => {
+                        warn!("Could not parse the game command arguments: {e}");
+                        return false;
+                    }
+                };
+                #[cfg(not(windows))]
+                let game_arguments = match shlex::split(state.game_arguments.as_str()) {
+                    Some(arguments) => arguments,
+                    None => {
+                        warn!("Could not parse the game command arguments");
+                        return false;
+                    }
+                };
+                if game_arguments.len() != 0 {
+                    command.args(game_arguments);
                 }
-            };
-            #[cfg(not(windows))]
-            let game_arguments = match shlex::split(state.game_arguments.as_str()) {
-                Some(arguments) => arguments,
-                None => {
-                    warn!("Could not parse the game command arguments");
-                    return false;
-                }
-            };
+            }
 
             for environment_var in &state.game_environment_vars {
                 command.env(&environment_var.0, &environment_var.1);
@@ -765,20 +774,16 @@ unsafe extern "C" fn start_game_clicked(
             if let Some(game_working_directory) = &state.game_working_directory {
                 match game_working_directory.exists() {
                     true => {
-                        command
-                            .args(game_arguments)
-                            .current_dir(game_working_directory);
+                        command.current_dir(game_working_directory);
                         command
                     }
                     false => {
                         warn!("Provided working directory was not found, using the default one");
-                        command.args(game_arguments);
                         command
                     }
                 }
             } else {
                 info!("No working directory provided, using the default one");
-                command.args(game_arguments);
                 command
             }
         }
